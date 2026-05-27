@@ -1,6 +1,5 @@
 package com.hotelmanagement.billing.dto;
 
-import com.hotelmanagement.billing.model.enums.BillingStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +12,7 @@ public class BillingResponse {
     private Long id;
     private Long bookingId;
     private BigDecimal amount;
-    private BillingStatus status;
+    private String status;
     private LocalDateTime issuedAt;
+    private LocalDateTime paidAt;  // Same as issuedAt for Option A (immediate payment)
 }

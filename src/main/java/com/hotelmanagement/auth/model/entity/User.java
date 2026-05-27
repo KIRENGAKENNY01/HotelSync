@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     private Long id;
 
     @NotBlank(message = "Full name is required")
-    @Column(nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
     @Email(message = "Valid email is required")

@@ -18,16 +18,23 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
   mail:
-    host: localhost
-    port: 1025 # MailHog or similar testing SMTP port
-    username: test
-    password: test
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:test}
+    password: ${MAIL_PASSWORD:test}
+    from: ${MAIL_FROM:test}
     properties:
       mail:
         smtp:
-          auth: true
+          auth: ${MAIL_SMTP_AUTH:true}
           starttls:
-            enable: true
+            enable: ${MAIL_SMTP_STARTTLS_ENABLE:true}
+            required: ${MAIL_SMTP_STARTTLS_REQUIRED:false}
+          ssl:
+            trust: ${MAIL_SMTP_SSL_TRUST:localhost}
+          connectiontimeout: ${MAIL_SMTP_CONNECTION_TIMEOUT:5000}
+          timeout: ${MAIL_SMTP_TIMEOUT:5000}
+          writetimeout: ${MAIL_SMTP_WRITE_TIMEOUT:5000}
 
 app:
   jwt:
@@ -37,5 +44,8 @@ app:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+    disable-swagger-default-url: true
   api-docs:
     path: /v3/api-docs
+  cache:
+    disabled: true

@@ -31,7 +31,10 @@ public class RoomServiceImpl implements RoomService {
         Room room = Room.builder()
                 .roomNumber(roomRequest.getRoomNumber())
                 .roomType(roomRequest.getRoomType())
-                .price(roomRequest.getPrice())
+                .pricePerNight(roomRequest.getPricePerNight())
+                .capacity(roomRequest.getCapacity() != null
+                        ? roomRequest.getCapacity()
+                        : roomRequest.getRoomType().getDefaultCapacity())
                 .isAvailable(roomRequest.getIsAvailable() != null ? roomRequest.getIsAvailable() : true)
                 .hotel(hotel)
                 .build();
@@ -48,6 +51,9 @@ public class RoomServiceImpl implements RoomService {
         room.setRoomNumber(roomRequest.getRoomNumber());
         room.setRoomType(roomRequest.getRoomType());
         room.setPricePerNight(roomRequest.getPricePerNight());
+        room.setCapacity(roomRequest.getCapacity() != null
+                ? roomRequest.getCapacity()
+                : roomRequest.getRoomType().getDefaultCapacity());
         if (roomRequest.getIsAvailable() != null) {
             room.setIsAvailable(roomRequest.getIsAvailable());
         }
@@ -86,6 +92,7 @@ public class RoomServiceImpl implements RoomService {
                 .roomNumber(room.getRoomNumber())
                 .roomType(room.getRoomType())
                 .pricePerNight(room.getPricePerNight())
+                .capacity(room.getCapacity())
                 .isAvailable(room.getIsAvailable())
                 .hotelId(room.getHotel().getId())
                 .build();

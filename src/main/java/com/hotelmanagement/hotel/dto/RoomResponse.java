@@ -12,7 +12,8 @@ public class RoomResponse {
     private Long id;
     private String roomNumber;
     private RoomType roomType;
-    private BigDecimal price;
+    private BigDecimal pricePerNight;
+    private Integer capacity;
     private Boolean isAvailable;
     private Long hotelId;
 }

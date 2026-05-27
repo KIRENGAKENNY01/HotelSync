@@ -8,10 +8,12 @@ import com.hotelmanagement.auth.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "1. Authentication", description = "Endpoints for user registration and login")
 public class AuthController {
 
     @Autowired

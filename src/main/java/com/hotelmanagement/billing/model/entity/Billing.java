@@ -45,7 +45,7 @@ public class Billing extends BaseEntity {
     private LocalDateTime generatedAt = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "payment_status", nullable = false)
     @Builder.Default
     private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 }

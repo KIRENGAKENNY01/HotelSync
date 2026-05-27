@@ -42,17 +42,17 @@ public class DatabaseSeeder {
                 hotelRepository.saveAll(Arrays.asList(hotel1, hotel2, hotel3));
 
                 // Create Rooms for Hotel 1
-                Room room1 = Room.builder().roomNumber("101").roomType(RoomType.SINGLE).pricePerNight(new BigDecimal("100.00")).capacity(1).isAvailable(true).hotel(hotel1).build();
-                Room room2 = Room.builder().roomNumber("102").roomType(RoomType.DOUBLE).pricePerNight(new BigDecimal("150.00")).capacity(2).isAvailable(true).hotel(hotel1).build();
-                Room room3 = Room.builder().roomNumber("103").roomType(RoomType.SUITE).pricePerNight(new BigDecimal("250.00")).capacity(4).isAvailable(true).hotel(hotel1).build();
+                Room room1 = Room.builder().roomNumber("101").roomType(RoomType.SINGLE).pricePerNight(new BigDecimal("100.00")).capacity(RoomType.SINGLE.getDefaultCapacity()).isAvailable(true).hotel(hotel1).build();
+                Room room2 = Room.builder().roomNumber("102").roomType(RoomType.DOUBLE).pricePerNight(new BigDecimal("150.00")).capacity(RoomType.DOUBLE.getDefaultCapacity()).isAvailable(true).hotel(hotel1).build();
+                Room room3 = Room.builder().roomNumber("103").roomType(RoomType.SUITE).pricePerNight(new BigDecimal("250.00")).capacity(RoomType.SUITE.getDefaultCapacity()).isAvailable(true).hotel(hotel1).build();
 
                 // Create Rooms for Hotel 2
-                Room h2Room1 = Room.builder().roomNumber("A1").roomType(RoomType.DOUBLE).pricePerNight(new BigDecimal("300.00")).capacity(2).isAvailable(true).hotel(hotel2).build();
-                Room room5 = Room.builder().roomNumber("202").roomType(RoomType.DELUXE).pricePerNight(new BigDecimal("200.00")).capacity(2).isAvailable(true).hotel(hotel2).build();
+                Room h2Room1 = Room.builder().roomNumber("A1").roomType(RoomType.DOUBLE).pricePerNight(new BigDecimal("300.00")).capacity(RoomType.DOUBLE.getDefaultCapacity()).isAvailable(true).hotel(hotel2).build();
+                Room room5 = Room.builder().roomNumber("202").roomType(RoomType.DELUXE).pricePerNight(new BigDecimal("200.00")).capacity(RoomType.DELUXE.getDefaultCapacity()).isAvailable(true).hotel(hotel2).build();
 
                 // Create Rooms for Hotel 3
-                Room h3Room1 = Room.builder().roomNumber("10").roomType(RoomType.SINGLE).pricePerNight(new BigDecimal("120.00")).capacity(1).isAvailable(true).hotel(hotel3).build();
-                Room h3Room2 = Room.builder().roomNumber("11").roomType(RoomType.SUITE).pricePerNight(new BigDecimal("350.00")).capacity(4).isAvailable(true).hotel(hotel3).build();
+                Room h3Room1 = Room.builder().roomNumber("10").roomType(RoomType.SINGLE).pricePerNight(new BigDecimal("120.00")).capacity(RoomType.SINGLE.getDefaultCapacity()).isAvailable(true).hotel(hotel3).build();
+                Room h3Room2 = Room.builder().roomNumber("11").roomType(RoomType.SUITE).pricePerNight(new BigDecimal("350.00")).capacity(RoomType.SUITE.getDefaultCapacity()).isAvailable(true).hotel(hotel3).build();
 
                 roomRepository.saveAll(Arrays.asList(room1, room2, room3, h2Room1, room5, h3Room1, h3Room2));
 

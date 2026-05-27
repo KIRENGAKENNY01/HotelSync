@@ -2,6 +2,7 @@ package com.hotelmanagement.booking.service.impl;
 
 import com.hotelmanagement.auth.model.entity.User;
 import com.hotelmanagement.auth.repository.UserRepository;
+import com.hotelmanagement.billing.model.entity.Billing;
 import com.hotelmanagement.billing.service.BillingService;
 import com.hotelmanagement.booking.dto.BookingRequest;
 import com.hotelmanagement.booking.dto.BookingResponse;
@@ -81,6 +82,7 @@ public class BookingServiceImpl implements BookingService {
         long days = ChronoUnit.DAYS.between(bookingRequest.getCheckInDate(), bookingRequest.getCheckOutDate());
         BigDecimal totalPrice = room.getPricePerNight().multiply(BigDecimal.valueOf(days));
 
+        // Save as PENDING — awaiting admin confirmation
         Booking booking = Booking.builder()
                 .user(user)
                 .hotel(hotel)
@@ -88,23 +90,51 @@ public class BookingServiceImpl implements BookingService {
                 .checkInDate(bookingRequest.getCheckInDate())
                 .checkOutDate(bookingRequest.getCheckOutDate())
                 .totalPrice(totalPrice)
-                .status(BookingStatus.CONFIRMED)
+                .status(BookingStatus.PENDING)
                 .build();
 
         Booking savedBooking = bookingRepository.save(booking);
-
-        // Generate billing
-        billingService.generateBill(savedBooking);
-
-        // Send email
-        emailService.sendBookingConfirmation(savedBooking);
 
         return mapToResponse(savedBooking);
     }
 
     @Override
+    @Transactional
+    public BookingResponse confirmBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+
+        if (booking.getStatus() == BookingStatus.CONFIRMED) {
+            throw new BadRequestException("Booking is already confirmed");
+        }
+
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
+            throw new BadRequestException("Cannot confirm a cancelled booking");
+        }
+
+        // Confirm the booking
+        booking.setStatus(BookingStatus.CONFIRMED);
+        Booking confirmedBooking = bookingRepository.save(booking);
+
+        // Generate bill (PENDING — customer still needs to pay)
+        Billing billing = billingService.generateBill(confirmedBooking);
+
+        // Send invoice email to customer — they will pay to lock the room
+        emailService.sendBillToCustomer(confirmedBooking, billing);
+
+        return mapToResponse(confirmedBooking);
+    }
+
+    @Override
     public List<BookingResponse> getUserBookings(Long userId) {
         return bookingRepository.findByUserId(userId).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BookingResponse> getAllBookings() {
+        return bookingRepository.findAll().stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
@@ -123,9 +153,44 @@ public class BookingServiceImpl implements BookingService {
             throw new BadRequestException("Booking is already cancelled");
         }
 
+        boolean wasConfirmed = booking.getStatus() == BookingStatus.CONFIRMED;
+
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
 
+        // Free the room only if it was confirmed (room was locked after payment)
+        if (wasConfirmed) {
+            Room room = booking.getRoom();
+            room.setIsAvailable(true);
+            roomRepository.save(room);
+        }
+
+        emailService.sendBookingCancellation(booking);
+    }
+
+    @Override
+    @Transactional
+    public void cancelAnyBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
+            throw new BadRequestException("Booking is already cancelled");
+        }
+
+        boolean wasConfirmed = booking.getStatus() == BookingStatus.CONFIRMED;
+
+        booking.setStatus(BookingStatus.CANCELLED);
+        bookingRepository.save(booking);
+
+        // Free the room if it was previously confirmed (room was locked)
+        if (wasConfirmed) {
+            Room room = booking.getRoom();
+            room.setIsAvailable(true);
+            roomRepository.save(room);
+        }
+
+        // Send cancellation email to customer
         emailService.sendBookingCancellation(booking);
     }
 
