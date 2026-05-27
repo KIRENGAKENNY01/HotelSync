@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8001
 
 spring:
   application:
@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/hoteldb
     username: postgres
-    password: password
+    password: kk123,4
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
