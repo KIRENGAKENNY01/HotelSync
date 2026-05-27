@@ -2,7 +2,7 @@ package com.hotelmanagement.billing.service.impl;
 
 import com.hotelmanagement.billing.dto.BillingResponse;
 import com.hotelmanagement.billing.model.entity.Billing;
-import com.hotelmanagement.billing.model.enums.BillingStatus;
+import com.hotelmanagement.billing.model.enums.PaymentStatus;
 import com.hotelmanagement.billing.repository.BillingRepository;
 import com.hotelmanagement.billing.service.BillingService;
 import com.hotelmanagement.booking.model.entity.Booking;

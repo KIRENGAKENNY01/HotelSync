@@ -47,7 +47,7 @@ public class RoomServiceImpl implements RoomService {
 
         room.setRoomNumber(roomRequest.getRoomNumber());
         room.setRoomType(roomRequest.getRoomType());
-        room.setPrice(roomRequest.getPrice());
+        room.setPricePerNight(roomRequest.getPricePerNight());
         if (roomRequest.getIsAvailable() != null) {
             room.setIsAvailable(roomRequest.getIsAvailable());
         }
@@ -85,7 +85,7 @@ public class RoomServiceImpl implements RoomService {
                 .id(room.getId())
                 .roomNumber(room.getRoomNumber())
                 .roomType(room.getRoomType())
-                .price(room.getPrice())
+                .pricePerNight(room.getPricePerNight())
                 .isAvailable(room.getIsAvailable())
                 .hotelId(room.getHotel().getId())
                 .build();

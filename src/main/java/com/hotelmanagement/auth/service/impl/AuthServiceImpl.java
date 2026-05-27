@@ -39,9 +39,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void registerUser(RegisterRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            throw new BadRequestException("Error: Username is already taken!");
-        }
+
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             throw new BadRequestException("Error: Email is already in use!");
@@ -54,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = User.builder()
-                .username(signUpRequest.getUsername())
+                .fullName(signUpRequest.getFullName())
                 .email(signUpRequest.getEmail())
                 .password(encoder.encode(signUpRequest.getPassword()))
                 .role(roleToAssign)
@@ -78,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
 
         return new JwtResponse(jwt,
                 userDetails.getId(),
-                userDetails.getUsername(),
+                userDetails.getFullName(),
                 userDetails.getEmail(),
                 roles);
     }

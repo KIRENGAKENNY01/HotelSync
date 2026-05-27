@@ -28,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
         String to = booking.getUser().getEmail();
         String subject = "Booking Confirmation - Hotel Management System";
         String content = "<h1>Booking Confirmed!</h1>"
-                + "<p>Dear " + booking.getUser().getUsername() + ",</p>"
+                + "<p>Dear " + booking.getUser().getFullName() + ",</p>"
                 + "<p>Your booking at <b>" + booking.getHotel().getName() + "</b> has been confirmed.</p>"
                 + "<p><b>Room:</b> " + booking.getRoom().getRoomNumber() + " (" + booking.getRoom().getRoomType() + ")</p>"
                 + "<p><b>Check-in:</b> " + booking.getCheckInDate() + "</p>"
@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
         String to = booking.getUser().getEmail();
         String subject = "Booking Cancellation - Hotel Management System";
         String content = "<h1>Booking Cancelled</h1>"
-                + "<p>Dear " + booking.getUser().getUsername() + ",</p>"
+                + "<p>Dear " + booking.getUser().getFullName() + ",</p>"
                 + "<p>Your booking at <b>" + booking.getHotel().getName() + "</b> for room " + booking.getRoom().getRoomNumber() + " has been successfully cancelled.</p>"
                 + "<p>We hope to see you again soon.</p>";
 

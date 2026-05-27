@@ -79,7 +79,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         long days = ChronoUnit.DAYS.between(bookingRequest.getCheckInDate(), bookingRequest.getCheckOutDate());
-        BigDecimal totalPrice = room.getPrice().multiply(BigDecimal.valueOf(days));
+        BigDecimal totalPrice = room.getPricePerNight().multiply(BigDecimal.valueOf(days));
 
         Booking booking = Booking.builder()
                 .user(user)
