@@ -62,6 +62,7 @@ public class EmailServiceImpl implements EmailService {
                 + "<hr/>"
                 + "<h3>Invoice Details</h3>"
                 + "<table style='border-collapse:collapse;width:100%'>"
+                + "<tr><td style='padding:8px;border:1px solid #ddd'><b>Billing ID</b></td><td style='padding:8px;border:1px solid #ddd'>#" + billing.getId() + "</td></tr>"
                 + "<tr><td style='padding:8px;border:1px solid #ddd'><b>Booking ID</b></td><td style='padding:8px;border:1px solid #ddd'>#" + booking.getId() + "</td></tr>"
                 + "<tr><td style='padding:8px;border:1px solid #ddd'><b>Hotel</b></td><td style='padding:8px;border:1px solid #ddd'>" + booking.getHotel().getName() + "</td></tr>"
                 + "<tr><td style='padding:8px;border:1px solid #ddd'><b>Room</b></td><td style='padding:8px;border:1px solid #ddd'>" + booking.getRoom().getRoomNumber() + " (" + booking.getRoom().getRoomType() + ")</td></tr>"
